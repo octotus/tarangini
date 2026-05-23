@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tarangini MVP</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">T</div>
+          <div>
+            <h1>Tarangini</h1>
+            <p>STEP to OpenFOAM workflow</p>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Workspace">
+          <button class="nav-item active" data-section="project">Project</button>
+          <button class="nav-item" data-section="setup">Simulation</button>
+          <button class="nav-item" data-section="run">Run Monitor</button>
+          <button class="nav-item" data-section="results">Results</button>
+          <button class="nav-item" data-section="validation">Validation</button>
+          <button class="nav-item" data-section="exports">Exports</button>
+        </nav>
+
+        <div class="status-panel">
+          <span class="eyebrow">Run Status</span>
+          <strong id="globalStatus">Draft</strong>
+          <span id="globalStatusHint">Complete setup to evaluate readiness.</span>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">MVP Prototype</span>
+            <h2 id="sectionTitle">Project</h2>
+          </div>
+          <div class="status-pill" id="validationPill">Blocked</div>
+        </header>
+
+        <section class="section active" id="project">
+          <div class="section-grid">
+            <div class="panel">
+              <h3>Project and Geometry</h3>
+              <div class="field">
+                <label for="projectName">Project name</label>
+                <input id="projectName" type="text" value="Demo Body Run">
+              </div>
+              <div class="field">
+                <label for="geometryFile">Geometry file</label>
+                <input id="geometryFile" type="file" accept=".step,.stp">
+              </div>
+              <div class="field">
+                <label for="geometryClass">Analysis class</label>
+                <select id="geometryClass">
+                  <option value="bluff">Bluff</option>
+                  <option value="streamlined">Mildly Streamlined</option>
+                </select>
+              </div>
+              <div class="field inline">
+                <input id="geometryEnvelope" type="checkbox" checked>
+                <label for="geometryEnvelope">Geometry appears inside the v1 envelope</label>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3>Geometry Review</h3>
+              <div class="review-list" id="geometryReview"></div>
+            </div>
+
+            <div class="panel viewer-panel project-viewer">
+              <h3>Object Viewer</h3>
+              <canvas id="geometryCanvas" width="720" height="420" aria-label="Uploaded geometry preview"></canvas>
+              <div class="viewer-meta" id="geometryMeta"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="setup">
+          <div class="section-grid">
+            <div class="panel">
+              <h3>Simulation Inputs</h3>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="orientation">Body orientation</label>
+                  <select id="orientation">
+                    <option>Lengthwise</option>
+                    <option>Side-on</option>
+                    <option>Vertical</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="angle">Angle relative to flow (deg)</label>
+                  <input id="angle" type="number" min="-30" max="30" value="0">
+                </div>
+                <div class="field">
+                  <label for="speed">Freestream speed (m/s)</label>
+                  <input id="speed" type="number" min="1" max="100" value="25">
+                </div>
+                <div class="field">
+                  <label for="altitude">Altitude (m)</label>
+                  <input id="altitude" type="number" min="0" max="3000" value="0">
+                </div>
+                <div class="field">
+                  <label for="pressure">Pressure (Pa)</label>
+                  <input id="pressure" type="number" min="70000" max="110000" value="101325">
+                </div>
+                <div class="field">
+                  <label for="temperature">Temperature (deg C)</label>
+                  <input id="temperature" type="number" min="-20" max="50" value="30">
+                </div>
+                <div class="field">
+                  <label for="length">Characteristic length (m)</label>
+                  <input id="length" type="number" min="0.1" max="10" step="0.1" value="1.2">
+                </div>
+                <div class="field">
+                  <label for="area">Projected reference area (m2)</label>
+                  <input id="area" type="number" min="0.01" max="20" step="0.01" value="0.45">
+                </div>
+              </div>
+              <p class="unit-note">Default pressure is 101325 Pa, the standard sea-level atmosphere reference.</p>
+            </div>
+
+            <div class="panel">
+              <h3>Derived Values</h3>
+              <div class="metric-grid" id="derivedMetrics"></div>
+              <div class="advanced-box">
+                <div class="field inline">
+                  <input id="advancedMode" type="checkbox">
+                  <label for="advancedMode">Advanced override active</label>
+                </div>
+                <div class="field">
+                  <label for="overrideReason">Override reason</label>
+                  <input id="overrideReason" type="text" placeholder="Optional provenance note">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="run">
+          <div class="section-grid">
+            <div class="panel">
+              <h3>Run Monitor</h3>
+              <div class="button-row">
+                <button id="startRun" class="primary">Start Run</button>
+                <button id="resetRun">Reset</button>
+              </div>
+              <div class="stage-list" id="stageList"></div>
+            </div>
+
+            <div class="panel log-panel">
+              <h3>Exchange Log</h3>
+              <pre id="runLog"></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="results">
+          <div class="section-grid">
+            <div class="panel">
+              <h3>Result Summary</h3>
+              <div class="metric-grid" id="resultMetrics"></div>
+              <div class="summary-table" id="qualitySummary"></div>
+            </div>
+
+            <div class="panel viewer-panel">
+              <h3>Wake Preview</h3>
+              <canvas id="wakeCanvas" width="720" height="420" aria-label="Wake visualization preview"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="validation">
+          <div class="panel wide">
+            <h3>Validation Summary</h3>
+            <div class="validation-grid" id="validationGrid"></div>
+          </div>
+        </section>
+
+        <section class="section" id="exports">
+          <div class="section-grid">
+            <div class="panel">
+              <h3>Exports</h3>
+              <div class="export-list" id="exportList"></div>
+            </div>
+            <div class="panel">
+              <h3>Provenance Snapshot</h3>
+              <pre id="provenance"></pre>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
