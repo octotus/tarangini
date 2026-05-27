@@ -1,0 +1,36 @@
+@media (max-width: 980px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .section-grid,
+  #project .section-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .section {
+    padding: 18px;
+  }
+
+  .form-grid,
+  .metric-grid,
+  .nav {
+    grid-template-columns: 1fr;
+  }
+}

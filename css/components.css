@@ -1,0 +1,155 @@
+.eyebrow {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.status-pill {
+  min-width: 128px;
+  text-align: center;
+  border-radius: 999px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  font-weight: 800;
+  background: #fff4e5;
+  color: var(--warn);
+}
+
+.status-pill.validated {
+  background: #e8f5ef;
+  color: var(--ok);
+  border-color: #b9dccc;
+}
+
+.status-pill.nonvalidated {
+  background: #eef5ff;
+  color: var(--info);
+  border-color: #bed4ef;
+}
+
+.status-pill.blocked {
+  background: #fff4e5;
+  color: var(--warn);
+  border-color: #edd1a9;
+}
+
+.review-list,
+.stage-list,
+.validation-grid,
+.export-list,
+.summary-table {
+  display: grid;
+  gap: 10px;
+}
+
+.review-item,
+.stage-item,
+.validation-item,
+.export-item,
+.quality-row {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #fbfcfc;
+  display: grid;
+  gap: 6px;
+}
+
+.row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.row-head strong {
+  font-size: 14px;
+}
+
+.row-head span,
+.review-item p,
+.stage-item p,
+.validation-item p,
+.export-item p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.tag {
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.tag.pass {
+  color: var(--ok);
+  background: #e8f5ef;
+}
+
+.tag.fail {
+  color: var(--danger);
+  background: #fdebea;
+}
+
+.tag.warn {
+  color: var(--warn);
+  background: #fff4e5;
+}
+
+.tag.idle {
+  color: var(--muted);
+  background: #edf1ef;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metric {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 13px;
+  background: #fbfcfc;
+}
+
+.metric span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 22px;
+}
+
+.stage-bar {
+  height: 8px;
+  background: #e7ecea;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.stage-bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width 220ms ease;
+}
+
+.runtime-status {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+}

@@ -1,0 +1,53 @@
+.log-panel pre,
+#provenance {
+  min-height: 360px;
+  max-height: 520px;
+  overflow: auto;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #101615;
+  color: #d8efe8;
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.viewer-panel canvas {
+  width: 100%;
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f6f8f8;
+}
+
+.project-viewer {
+  grid-row: span 2;
+}
+
+.project-viewer canvas {
+  cursor: grab;
+}
+
+.project-viewer canvas:active {
+  cursor: grabbing;
+}
+
+.orientation-controls {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding: 14px 0 2px;
+}
+
+.viewer-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.viewer-meta .metric strong {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}

@@ -5,8 +5,11 @@ Planning notes, product specs, and an MVP prototype for a geometry-to-CFD deskto
 ## Current contents
 
 * `index.html` - dependency-free Tarangini MVP prototype
-* `styles.css` - MVP application styling
-* `app.js` - local workflow, validation, run monitor, results, and provenance logic
+* `styles.css` - stylesheet entrypoint
+* `css/` - modular style files for base rules, layout, forms, components, viewers, and responsive behavior
+* `app.js` - browser entrypoint
+* `js/` - modular frontend files for state, validation, rendering, geometry preview, runtime checks, and run orchestration
+* `src/` - modular Rust server files for static serving, HTTP helpers, and OpenFOAM discovery
 * `initial_discussion_20260422.md` - initial product and technical planning discussion
 * `v1_scope.md` - agreed v1 product scope and boundaries
 * `design_decisions.md` - numbered design decision log
@@ -23,7 +26,14 @@ cargo run
 
 Then open `http://localhost:5173`.
 
-The MVP is a local Rust-served prototype. It implements the product workflow, validation gates, staged run monitor, synthetic results, and provenance export surface. It does not yet invoke a real OpenFOAM runtime.
+The MVP is a local Rust-served prototype. It implements the product workflow, model preview, orientation setup, validation gates, OpenFOAM runtime detection, staged run monitor, synthetic results, and provenance export surface.
+
+Runtime checks:
+
+* `http://localhost:5173/api/health` - Rust server health
+* `http://localhost:5173/api/openfoam` - local OpenFOAM command discovery
+
+The MVP detects OpenFOAM commands on `PATH`, but it does not yet execute a real solver case.
 
 ## Near-term goal
 

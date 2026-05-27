@@ -75,6 +75,24 @@
             <div class="panel viewer-panel project-viewer">
               <h3>Object Viewer</h3>
               <canvas id="geometryCanvas" width="720" height="420" aria-label="Uploaded geometry preview"></canvas>
+              <div class="orientation-controls">
+                <div class="field">
+                  <label for="yaw">Yaw around vertical axis (deg)</label>
+                  <input id="yaw" type="range" min="-180" max="180" value="-26">
+                </div>
+                <div class="field">
+                  <label for="pitch">Pitch around lateral axis (deg)</label>
+                  <input id="pitch" type="range" min="-60" max="60" value="12">
+                </div>
+                <div class="field">
+                  <label for="roll">Roll around flow axis (deg)</label>
+                  <input id="roll" type="range" min="-90" max="90" value="0">
+                </div>
+                <div class="button-row">
+                  <button id="resetOrientation" type="button">Reset Orientation</button>
+                  <button id="useViewerOrientation" type="button">Use Viewer Angle</button>
+                </div>
+              </div>
               <div class="viewer-meta" id="geometryMeta"></div>
             </div>
           </div>
@@ -92,6 +110,10 @@
                     <option>Side-on</option>
                     <option>Vertical</option>
                   </select>
+                </div>
+                <div class="field">
+                  <label for="orientationSummary">Orientation transform</label>
+                  <input id="orientationSummary" type="text" value="Yaw -26 deg, pitch 12 deg, roll 0 deg" readonly>
                 </div>
                 <div class="field">
                   <label for="angle">Angle relative to flow (deg)</label>
@@ -157,6 +179,14 @@
               <h3>Exchange Log</h3>
               <pre id="runLog"></pre>
             </div>
+
+            <div class="panel">
+              <h3>OpenFOAM Runtime</h3>
+              <div class="runtime-status" id="openfoamStatus"></div>
+              <div class="button-row">
+                <button id="refreshOpenFoam" type="button">Refresh Runtime</button>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -197,6 +227,6 @@
       </main>
     </div>
 
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
   </body>
 </html>
