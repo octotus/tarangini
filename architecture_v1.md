@@ -365,6 +365,8 @@ Contains:
 * drag/lift metrics
 * pressure-result metadata
 * wake/slice artifact links
+* replay artifact links for saved result intervals
+* graph artifact links for exported Run Monitor telemetry
 * convergence summary
 * mesh summary
 * `y+` summary
@@ -374,9 +376,28 @@ Contains:
 Contains:
 
 * export type
+* export format
 * output path
 * source run
 * carried validation status
+
+## Results Visualization Policy
+
+Live run visualization and post-run visualization are separate product surfaces.
+
+During solver execution, Tarangini should show engineering telemetry:
+
+* stage progress
+* residual plots
+* drag/lift or force-coefficient charts when available
+* solver warnings and log summaries
+* mesh and post-processing status
+
+Telemetry graphs belong on the Run Monitor page. They should update during execution, remain available after completion, and support graph-level export actions. `SVG` is the preferred graph export format because it preserves labels and lines for reports; `PNG` and `TIFF`/`TIF` may be offered as raster alternatives.
+
+These live views are intended to help users judge convergence, stability, and run health. They should be based on logs, function-object outputs, and completed write intervals.
+
+After solver/post-processing completion, Tarangini may build an animated replay from saved result intervals, typically converted through VTK-compatible output. The replay viewer can show velocity magnitude, pressure, streamlines, slices, and particle-style traces. For steady-state runs, the replay represents solver iteration or convergence history; for transient runs, it may represent physical time.
 
 ## Validation Architecture
 

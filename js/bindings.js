@@ -2,6 +2,7 @@ import { $, bindInputs } from "./dom.js";
 import { resetOrientation, useViewerOrientation } from "./orientation.js";
 import { readGeometryFile } from "./stepPreview.js";
 import { installOpenFoam, refreshOpenFoam } from "./runtime.js";
+import { exportTelemetryPng, exportTelemetrySvg } from "./telemetryGraphs.js";
 import { render } from "./render.js";
 import { resetRun, startRun } from "./run.js";
 import { inputs, state } from "./state.js";
@@ -52,6 +53,8 @@ function bindRunControls() {
   $("resetRun").addEventListener("click", resetRun);
   $("refreshOpenFoam").addEventListener("click", refreshOpenFoam);
   $("installOpenFoam").addEventListener("click", installOpenFoam);
+  $("exportGraphsSvg").addEventListener("click", exportTelemetrySvg);
+  $("exportGraphsPng").addEventListener("click", exportTelemetryPng);
 }
 
 function bindOrientationControls() {

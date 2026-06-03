@@ -19,6 +19,7 @@ export function startRun() {
   state.runState = "running";
   state.completed = false;
   state.activeStage = 0;
+  state.telemetry = [telemetrySample(0, values, derived)];
   state.log = [`[${new Date().toLocaleTimeString()}] Run started with ${validationState.finalStatus} status.`];
   state.log.unshift(`[${new Date().toLocaleTimeString()}] OpenFOAM ${state.openfoam.status}: ${state.openfoam.detail}`);
 
@@ -28,6 +29,7 @@ export function startRun() {
       state.log.unshift(`[${new Date().toLocaleTimeString()}] ${stage[1]} completed.`);
     }
     state.activeStage += 1;
+    state.telemetry.push(telemetrySample(state.activeStage, values, derived));
 
     if (state.activeStage >= stageDefs.length) {
       clearInterval(state.runTimer);
@@ -49,6 +51,23 @@ export function resetRun() {
   state.runState = "draft";
   state.activeStage = -1;
   state.completed = false;
+  state.telemetry = [];
   state.log = [];
   render();
+}
+
+function telemetrySample(index, values, derived) {
+  const progress = Math.min(1, index / stageDefs.length);
+  const dynamicPressure = 0.5 * derived.density * values.speed * values.speed;
+  const residual = Math.max(1e-5, 1 * Math.pow(0.16, progress * 2.2));
+  const drag = dynamicPressure * derived.referenceArea * (0.7 + progress * 0.22);
+  const lift = dynamicPressure * derived.referenceArea * (0.05 + Math.sin(progress * Math.PI) * 0.08);
+  return {
+    iteration: index,
+    residual,
+    drag,
+    lift,
+    cd: 0.7 + progress * 0.22,
+    cl: 0.05 + Math.sin(progress * Math.PI) * 0.08
+  };
 }

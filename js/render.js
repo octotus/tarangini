@@ -8,6 +8,7 @@ import { derive, resultModel } from "./physics.js";
 import { stageDefs, state } from "./state.js";
 import { validation } from "./validation.js";
 import { syncViewerFromOrientation } from "./orientation.js";
+import { renderTelemetryGraphs } from "./telemetryGraphs.js";
 
 export function render() {
   syncViewerFromOrientation();
@@ -21,6 +22,7 @@ export function render() {
   drawGeometryPreview(values);
   renderDerived(derived);
   renderStages();
+  renderTelemetryGraphs($("telemetryGraphs"));
   renderOpenFoam();
   renderResults(results);
   renderValidation(validationState);
@@ -98,6 +100,8 @@ function renderStages() {
     .join("");
 
   $("runLog").textContent = state.log.join("\n") || "No run events yet.";
+  $("exportGraphsSvg").disabled = !state.completed || state.telemetry.length === 0;
+  $("exportGraphsPng").disabled = !state.completed || state.telemetry.length === 0;
 }
 
 function renderOpenFoam() {

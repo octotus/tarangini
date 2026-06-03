@@ -31,6 +31,7 @@ export const state = {
     activationScript: null,
     repositories: []
   },
+  telemetry: [],
   log: []
 };
 

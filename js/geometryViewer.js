@@ -21,10 +21,12 @@ export function drawGeometryPreview(values) {
   const fileOk = /\.(step|stp)$/i.test(values.geometryFile);
   if (values.geometryPreview.points.length > 0) {
     drawStepPointPreview(ctx, values, width, height, fileOk);
+    drawFlowDirection(ctx, width, fileOk);
     return;
   }
 
   drawProxyPreview(ctx, values, width, height, fileOk);
+  drawFlowDirection(ctx, width, fileOk);
 }
 
 function drawProxyPreview(ctx, values, width, height, fileOk) {
@@ -109,4 +111,34 @@ function drawStepPointPreview(ctx, values, width, height, fileOk) {
   ctx.font = "13px system-ui";
   ctx.fillStyle = "#667174";
   ctx.fillText("Parsed STEP coordinate preview. Drag to rotate.", 24, 58);
+}
+
+function drawFlowDirection(ctx, width, fileOk) {
+  if (!fileOk) return;
+
+  const startX = width - 230;
+  const endX = width - 38;
+  const y = 46;
+
+  ctx.save();
+  ctx.strokeStyle = "#0f6f95";
+  ctx.fillStyle = "#0f6f95";
+  ctx.lineWidth = 3;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(startX, y);
+  ctx.lineTo(endX, y);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(endX, y);
+  ctx.lineTo(endX - 13, y - 8);
+  ctx.lineTo(endX - 13, y + 8);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.font = "800 12px system-ui";
+  ctx.textAlign = "center";
+  ctx.fillText("FLOW", (startX + endX) / 2, y - 12);
+  ctx.restore();
 }

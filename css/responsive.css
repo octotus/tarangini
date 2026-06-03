@@ -16,6 +16,10 @@
   #project .section-grid {
     grid-template-columns: 1fr;
   }
+
+  .telemetry-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -32,5 +36,10 @@
   .metric-grid,
   .nav {
     grid-template-columns: 1fr;
+  }
+
+  .panel-head {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

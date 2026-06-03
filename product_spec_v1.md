@@ -197,6 +197,7 @@ Tarangini provides:
 * a simple run-progress view by default
 * an on-demand advanced log view
 * named workflow stages such as geometry checks, case generation, meshing, solving, and post-processing
+* Run Monitor graphs for live residuals, forces, coefficients, and related solver telemetry when available
 * a simple progress indicator for each stage
 * cancel and rerun controls
 * no pause/resume in v1
@@ -220,9 +221,16 @@ Tarangini shows the following directly in-app:
 Tarangini also provides:
 
 * a limited built-in results viewer
-* a limited live view inside the Run Monitor during ongoing simulation where practical
+* live run telemetry during ongoing simulation using engineering views such as residual plots, force/coefficient charts, stage timing, solver health, and log summaries
+* post-completion animated replay of saved flow-field results when the run writes sufficient time/iteration snapshots
 * ParaView-compatible exports
 * post-run handoff to ParaView for deeper inspection
+
+During an active run, Tarangini should prioritize traditional graphs and status views that help users judge convergence, stability, and run quality. It should not present a smooth wind-tunnel animation as the primary live interface unless the underlying solver output supports it without misleading the user.
+
+After completion, Tarangini may offer animated replay of pressure, velocity, streamlines, slices, or particles using exported result intervals. For steady-state cases, replay must be labeled as solver-iteration/progress replay rather than physical time animation.
+
+Run Monitor graphs must remain available after the run completes and should be exportable from the graph view. Preferred graph export format is `SVG`, with `PNG` and `TIFF`/`TIF` support where practical.
 
 ## Exports
 
@@ -230,6 +238,7 @@ Tarangini v1 supports export of:
 
 * report document
 * CSV metrics
+* Run Monitor graphs, preferably as SVG
 * images/screenshots
 * full case bundle
 * raw OpenFOAM results
