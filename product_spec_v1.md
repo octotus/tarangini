@@ -257,6 +257,12 @@ Tarangini detects whether `OpenFOAM` is already installed.
 * If `OpenFOAM` is absent, Tarangini guides the user through installation of the validated supported version.
 * If another version is present, Tarangini informs the user that validated workflows do not apply to that runtime.
 
+Installation policy:
+
+* Tarangini must ask for explicit user permission at install time before installing or modifying `OpenFOAM`, WSL2, Ubuntu distributions, package repositories, or runtime dependencies.
+* Runtime installation must not run silently in the background.
+* If installation is declined, Tarangini keeps setup/model preview available and marks simulation execution as blocked with actionable next steps.
+
 ## Workspace and Data Model
 
 Tarangini uses a three-part storage model:

@@ -30,7 +30,7 @@ export async function refreshOpenFoam() {
 
 export async function installOpenFoam() {
   const approved = window.confirm(
-    "Download the official OpenFOAM-13 and ThirdParty-13 source repositories into .tarangini/openfoam/? This can take time and uses network access."
+    "Install OpenFOAM source now?\n\nTarangini will download or update the official OpenFOAM-13 and ThirdParty-13 source repositories under .tarangini/openfoam/. This uses network access and may take time. Nothing will be installed unless you approve this step."
   );
 
   if (!approved) {

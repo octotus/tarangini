@@ -433,6 +433,8 @@ Startup/runtime-preflight flow:
    * no runtime -> guide installation of validated runtime
    * unsupported runtime -> allow awareness, but warn that validated workflows do not apply
 
+Any runtime installation path must require an explicit user install action and an install-time confirmation before changing the system, WSL distro, package repositories, or OpenFOAM workspace. The runtime adapter must report a declined install as a blocked-but-recoverable setup state, not as an application failure.
+
 This logic belongs in the runtime adapter plus onboarding/setup UI.
 
 ## UI-to-Core Boundaries

@@ -38,7 +38,8 @@ The MVP detects OpenFOAM commands on `PATH`, but it does not yet execute a real 
 OpenFOAM source install:
 
 * The Run Monitor includes an explicit **Install OpenFOAM Source** action.
-* The backend only installs after that user action and a matching permission header.
+* The backend only installs after that user action, a confirmation prompt, and a matching permission header.
+* OpenFOAM installation must never run silently in the background.
 * Source repositories are cloned or updated under `.tarangini/openfoam/`.
 * Downloaded source is ignored by git.
 * The current installer prepares source and an activation script; compilation is still a later integration step.
