@@ -55,6 +55,34 @@ function bindRunControls() {
   $("installOpenFoam").addEventListener("click", installOpenFoam);
   $("exportGraphsSvg").addEventListener("click", exportTelemetrySvg);
   $("exportGraphsPng").addEventListener("click", exportTelemetryPng);
+  $("playReplay").addEventListener("click", toggleReplay);
+  $("resetReplay").addEventListener("click", resetReplayView);
+}
+
+function toggleReplay() {
+  if (!state.completed) return;
+  if (state.replay.playing) {
+    clearInterval(state.replay.timer);
+    state.replay.timer = null;
+    state.replay.playing = false;
+    render();
+    return;
+  }
+
+  state.replay.playing = true;
+  state.replay.timer = setInterval(() => {
+    state.replay.frame = (state.replay.frame + 1) % state.replay.frameCount;
+    render();
+  }, 85);
+  render();
+}
+
+function resetReplayView() {
+  clearInterval(state.replay.timer);
+  state.replay.timer = null;
+  state.replay.playing = false;
+  state.replay.frame = 0;
+  render();
 }
 
 function bindOrientationControls() {

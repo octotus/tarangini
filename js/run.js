@@ -16,9 +16,13 @@ export function startRun() {
   }
 
   clearInterval(state.runTimer);
+  clearInterval(state.replay.timer);
   state.runState = "running";
   state.completed = false;
   state.activeStage = 0;
+  state.replay.timer = null;
+  state.replay.playing = false;
+  state.replay.frame = 0;
   state.telemetry = [telemetrySample(0, values, derived)];
   state.log = [`[${new Date().toLocaleTimeString()}] Run started with ${validationState.finalStatus} status.`];
   state.log.unshift(`[${new Date().toLocaleTimeString()}] OpenFOAM ${state.openfoam.status}: ${state.openfoam.detail}`);
@@ -47,7 +51,11 @@ export function startRun() {
 
 export function resetRun() {
   clearInterval(state.runTimer);
+  clearInterval(state.replay.timer);
   state.runTimer = null;
+  state.replay.timer = null;
+  state.replay.playing = false;
+  state.replay.frame = 0;
   state.runState = "draft";
   state.activeStage = -1;
   state.completed = false;

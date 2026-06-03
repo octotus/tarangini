@@ -32,6 +32,12 @@ export const state = {
     repositories: []
   },
   telemetry: [],
+  replay: {
+    playing: false,
+    timer: null,
+    frame: 0,
+    frameCount: 72
+  },
   log: []
 };
 

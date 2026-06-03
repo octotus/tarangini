@@ -34,7 +34,7 @@ export function readGeometryFile() {
     };
     render();
   };
-  reader.readAsText(file.slice(0, 2_000_000));
+  reader.readAsText(file.slice(0, 8_000_000));
 }
 
 export function parseStepPreview(fileName, text) {
@@ -44,7 +44,7 @@ export function parseStepPreview(fileName, text) {
   const pointPattern = /CARTESIAN_POINT\s*\(\s*'[^']*'\s*,\s*\(\s*([-+0-9.Ee]+)\s*,\s*([-+0-9.Ee]+)\s*,\s*([-+0-9.Ee]+)\s*\)\s*\)/gi;
   let match = pointPattern.exec(text);
 
-  while (match && points.length < 2500) {
+  while (match && points.length < 8000) {
     const point = {
       x: Number(match[1]),
       y: Number(match[2]),
@@ -57,7 +57,7 @@ export function parseStepPreview(fileName, text) {
   }
 
   const bounds = points.length > 0 ? pointBounds(points) : null;
-  const truncated = /CARTESIAN_POINT/i.test(text) && points.length === 2500;
+  const truncated = /CARTESIAN_POINT/i.test(text) && points.length === 8000;
   const note =
     points.length > 0
       ? `${points.length}${truncated ? "+" : ""} STEP coordinate points parsed for preview.`

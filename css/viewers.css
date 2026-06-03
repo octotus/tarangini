@@ -20,6 +20,10 @@
   background: #f6f8f8;
 }
 
+.simulation-panel {
+  grid-column: 1 / -1;
+}
+
 .project-viewer {
   grid-row: span 2;
 }

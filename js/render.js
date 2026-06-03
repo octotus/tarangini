@@ -1,6 +1,7 @@
 import { $ } from "./dom.js";
 import { metric, row } from "./components.js";
 import { drawGeometryPreview } from "./geometryViewer.js";
+import { drawSimulationReplay } from "./simulationReplay.js";
 import { drawWake } from "./wakeViewer.js";
 import { formatBytes, formatFixed, formatSci } from "./format.js";
 import { collectInputs, orientationLabel } from "./model.js";
@@ -28,6 +29,7 @@ export function render() {
   renderValidation(validationState);
   renderExports(values, derived, validationState, results);
   drawWake(values, results);
+  drawSimulationReplay(values, results);
 }
 
 function renderGlobal(validationState) {
@@ -139,6 +141,9 @@ function installDetail() {
 
 function renderResults(results) {
   const locked = !state.completed;
+  $("playReplay").disabled = locked;
+  $("resetReplay").disabled = locked;
+  $("playReplay").textContent = state.replay.playing ? "Pause" : "Play";
   $("resultMetrics").innerHTML = locked
     ? metric("Status", "Run not completed")
     : [
