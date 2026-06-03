@@ -1,19 +1,33 @@
-export function projectPoint(point, centerX, centerY, cos, sin, tiltScale) {
-  const rotatedX = point.x * cos - point.z * sin;
-  const rotatedZ = point.x * sin + point.z * cos;
+export function projectPoint(point, centerX, centerY) {
   return {
-    x: centerX + rotatedX + rotatedZ * 0.18,
-    y: centerY + point.y * tiltScale - rotatedZ * 0.28
+    x: centerX + point.x + point.z * 0.18,
+    y: centerY + point.y - point.z * 0.28
   };
 }
 
-export function rollPoint(point, roll) {
-  const cos = Math.cos(roll);
-  const sin = Math.sin(roll);
-  return {
+export function orientPoint(point, yaw, pitch, roll) {
+  const yawCos = Math.cos(yaw);
+  const yawSin = Math.sin(yaw);
+  const pitchCos = Math.cos(pitch);
+  const pitchSin = Math.sin(pitch);
+  const rollCos = Math.cos(roll);
+  const rollSin = Math.sin(roll);
+
+  const rolled = {
     x: point.x,
-    y: point.y * cos - point.z * sin,
-    z: point.y * sin + point.z * cos
+    y: point.y * rollCos - point.z * rollSin,
+    z: point.y * rollSin + point.z * rollCos
+  };
+  const pitched = {
+    x: rolled.x * pitchCos - rolled.y * pitchSin,
+    y: rolled.x * pitchSin + rolled.y * pitchCos,
+    z: rolled.z
+  };
+
+  return {
+    x: pitched.x * yawCos - pitched.z * yawSin,
+    y: pitched.y,
+    z: pitched.x * yawSin + pitched.z * yawCos
   };
 }
 

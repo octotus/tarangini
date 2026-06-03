@@ -64,6 +64,9 @@ function renderGeometry(values) {
   ].join("");
 
   $("orientationSummary").value = orientationLabel(values);
+  $("yawValue").value = values.yaw;
+  $("pitchValue").value = values.pitch;
+  $("rollValue").value = values.roll;
 }
 
 function renderDerived(derived) {

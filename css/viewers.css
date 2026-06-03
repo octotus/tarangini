@@ -40,6 +40,18 @@
   padding: 14px 0 2px;
 }
 
+.angle-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 84px;
+  gap: 10px;
+  align-items: center;
+}
+
+.angle-control input[type="number"] {
+  min-width: 0;
+  text-align: right;
+}
+
 .viewer-meta {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

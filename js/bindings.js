@@ -57,6 +57,25 @@ function bindRunControls() {
 function bindOrientationControls() {
   $("resetOrientation").addEventListener("click", resetOrientation);
   $("useViewerOrientation").addEventListener("click", useViewerOrientation);
+  bindAngleInput("yaw", "yawValue", -180, 180);
+  bindAngleInput("pitch", "pitchValue", -60, 60);
+  bindAngleInput("roll", "rollValue", -90, 90);
+}
+
+function bindAngleInput(sliderId, numberId, min, max) {
+  inputs[numberId] = $(numberId);
+  inputs[numberId].addEventListener("input", () => {
+    const value = Number(inputs[numberId].value);
+    if (!Number.isFinite(value)) return;
+    inputs[sliderId].value = Math.max(min, Math.min(max, value));
+    render();
+  });
+  inputs[numberId].addEventListener("change", () => {
+    const value = Number(inputs[numberId].value);
+    inputs[sliderId].value = Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : 0;
+    inputs[numberId].value = inputs[sliderId].value;
+    render();
+  });
 }
 
 function bindGeometryCanvas() {

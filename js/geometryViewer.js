@@ -1,7 +1,7 @@
 import { $ } from "./dom.js";
 import { state } from "./state.js";
 import { drawEdges, drawFrontFace, drawGrid } from "./canvasPrimitives.js";
-import { boxEdges, boxPoints, projectPoint, rollPoint, streamlinedEdges, streamlinedPoints } from "./geometryMath.js";
+import { boxEdges, boxPoints, orientPoint, projectPoint, streamlinedEdges, streamlinedPoints } from "./geometryMath.js";
 
 export function drawGeometryPreview(values) {
   const canvas = $("geometryCanvas");
@@ -30,14 +30,11 @@ export function drawGeometryPreview(values) {
 function drawProxyPreview(ctx, values, width, height, fileOk) {
   const centerX = width / 2;
   const centerY = height / 2 + 14;
-  const angle = state.viewerAngle;
-  const tilt = state.viewerTilt;
+  const yaw = state.viewerAngle;
+  const pitch = state.viewerTilt;
   const roll = (values.roll * Math.PI) / 180;
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  const tiltScale = 0.55 + Math.cos(tilt) * 0.25;
   const points = values.geometryClass === "bluff" ? boxPoints(190, 110, 90) : streamlinedPoints(230, 84, 80);
-  const projected = points.map((point) => projectPoint(rollPoint(point, roll), centerX, centerY, cos, sin, tiltScale));
+  const projected = points.map((point) => projectPoint(orientPoint(point, yaw, pitch, roll), centerX, centerY));
 
   drawEdges(ctx, projected, values.geometryClass === "bluff" ? boxEdges() : streamlinedEdges());
   ctx.fillStyle = "#1f7a6d";
@@ -67,12 +64,9 @@ function drawStepPointPreview(ctx, values, width, height, fileOk) {
   const bounds = values.geometryPreview.bounds;
   const centerX = width / 2;
   const centerY = height / 2 + 20;
-  const angle = state.viewerAngle;
-  const tilt = state.viewerTilt;
+  const yaw = state.viewerAngle;
+  const pitch = state.viewerTilt;
   const roll = (values.roll * Math.PI) / 180;
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  const tiltScale = 0.55 + Math.cos(tilt) * 0.25;
   const spanX = bounds.maxX - bounds.minX || 1;
   const spanY = bounds.maxY - bounds.minY || 1;
   const spanZ = bounds.maxZ - bounds.minZ || 1;
@@ -83,24 +77,23 @@ function drawStepPointPreview(ctx, values, width, height, fileOk) {
 
   const projected = points.map((point) =>
     projectPoint(
-      rollPoint(
+      orientPoint(
         {
           x: (point.x - midX) * scale,
           y: -(point.y - midY) * scale,
           z: (point.z - midZ) * scale
         },
+        yaw,
+        pitch,
         roll
       ),
       centerX,
-      centerY,
-      cos,
-      sin,
-      tiltScale
+      centerY
     )
   );
 
   const box = boxPoints(spanX * scale, spanY * scale, spanZ * scale);
-  const boxProjected = box.map((point) => projectPoint(rollPoint(point, roll), centerX, centerY, cos, sin, tiltScale));
+  const boxProjected = box.map((point) => projectPoint(orientPoint(point, yaw, pitch, roll), centerX, centerY));
   drawEdges(ctx, boxProjected, boxEdges(), "rgba(30, 36, 36, 0.28)");
 
   ctx.fillStyle = fileOk ? "#1f7a6d" : "#b42318";
