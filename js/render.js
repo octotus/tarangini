@@ -106,8 +106,28 @@ function renderOpenFoam() {
   $("openfoamStatus").innerHTML = [
     row("Runtime status", tagStatus, state.openfoam.detail),
     row("Version", status === "available" ? "pass" : "idle", state.openfoam.version || "unknown"),
-    row("Commands", state.openfoam.commands.length ? "pass" : "idle", commands)
+    row("Commands", state.openfoam.commands.length ? "pass" : "idle", commands),
+    row("Source install", installStatusClass(state.openfoamInstall.status), installDetail())
   ].join("");
+}
+
+function installStatusClass(status) {
+  if (status === "source-ready") return "pass";
+  if (status === "failed") return "fail";
+  if (status === "installing") return "warn";
+  return "idle";
+}
+
+function installDetail() {
+  const install = state.openfoamInstall;
+  const locations = [install.detail];
+  if (install.installRoot) {
+    locations.push(`Install root: ${install.installRoot}`);
+  }
+  if (install.activationScript) {
+    locations.push(`Activation script: ${install.activationScript}`);
+  }
+  return locations.join("\n");
 }
 
 function renderResults(results) {
@@ -179,6 +199,7 @@ function renderExports(values, derived, validationState, results) {
       derived,
       validationStatus: validationState.finalStatus,
       openfoam: state.openfoam,
+      openfoamInstall: state.openfoamInstall,
       runState: state.runState,
       advancedOverride: values.advancedMode ? { active: true, reason: values.overrideReason || "Unspecified" } : { active: false },
       resultSet: state.completed ? results : null

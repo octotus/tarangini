@@ -1,7 +1,7 @@
 import { $, bindInputs } from "./dom.js";
 import { resetOrientation, useViewerOrientation } from "./orientation.js";
 import { readGeometryFile } from "./stepPreview.js";
-import { refreshOpenFoam } from "./runtime.js";
+import { installOpenFoam, refreshOpenFoam } from "./runtime.js";
 import { render } from "./render.js";
 import { resetRun, startRun } from "./run.js";
 import { inputs, state } from "./state.js";
@@ -51,6 +51,7 @@ function bindRunControls() {
   $("startRun").addEventListener("click", startRun);
   $("resetRun").addEventListener("click", resetRun);
   $("refreshOpenFoam").addEventListener("click", refreshOpenFoam);
+  $("installOpenFoam").addEventListener("click", installOpenFoam);
 }
 
 function bindOrientationControls() {

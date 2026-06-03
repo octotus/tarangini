@@ -24,6 +24,13 @@ export const state = {
     version: "unknown",
     commands: []
   },
+  openfoamInstall: {
+    status: "idle",
+    detail: "OpenFOAM source install has not been requested.",
+    installRoot: null,
+    activationScript: null,
+    repositories: []
+  },
   log: []
 };
 

@@ -32,19 +32,57 @@ fn handle_connection(mut stream: TcpStream, root: &Path) -> io::Result<()> {
     let mut reader = BufReader::new(stream.try_clone()?);
     let mut request_line = String::new();
     reader.read_line(&mut request_line)?;
+    let headers = read_headers(&mut reader)?;
 
     let mut parts = request_line.split_whitespace();
     let method = parts.next().unwrap_or_default();
     let target = parts.next().unwrap_or("/");
     let is_head = method == "HEAD";
 
-    if method != "GET" && !is_head {
+    if method != "GET" && !is_head && method != "POST" {
         return http::respond(
             &mut stream,
             405,
             "Method Not Allowed",
             "text/plain; charset=utf-8",
-            b"Only GET and HEAD are supported by the MVP server.",
+            b"Only GET, HEAD, and selected POST routes are supported by the MVP server.",
+            false,
+        );
+    }
+
+    if method == "POST" {
+        if target == "/api/openfoam/install" {
+            let has_permission = headers.iter().any(|header| {
+                header
+                    .to_ascii_lowercase()
+                    .starts_with("x-tarangini-install: openfoam-source")
+            });
+            let (status, body) = if has_permission {
+                (200, openfoam::install_source_json(root))
+            } else {
+                (
+                    403,
+                    openfoam::install_denied_json(
+                        "OpenFOAM installation requires an explicit user permission header.",
+                    ),
+                )
+            };
+            return http::respond(
+                &mut stream,
+                status,
+                if status == 200 { "OK" } else { "Forbidden" },
+                "application/json; charset=utf-8",
+                body.as_bytes(),
+                false,
+            );
+        }
+
+        return http::respond(
+            &mut stream,
+            404,
+            "Not Found",
+            "text/plain; charset=utf-8",
+            b"Unknown POST route.",
             false,
         );
     }
@@ -115,4 +153,19 @@ fn handle_connection(mut stream: TcpStream, root: &Path) -> io::Result<()> {
             )
         }
     }
+}
+
+fn read_headers(reader: &mut BufReader<TcpStream>) -> io::Result<Vec<String>> {
+    let mut headers = Vec::new();
+
+    loop {
+        let mut line = String::new();
+        let bytes = reader.read_line(&mut line)?;
+        if bytes == 0 || line == "\r\n" || line == "\n" {
+            break;
+        }
+        headers.push(line.trim_end().to_string());
+    }
+
+    Ok(headers)
 }
